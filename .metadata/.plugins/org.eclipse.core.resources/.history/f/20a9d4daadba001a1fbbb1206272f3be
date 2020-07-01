@@ -1,0 +1,10 @@
+package ex06.autowired;
+
+public class Printer {
+
+	private Document doc1;
+	
+	public Printer(Document doc1) {
+		this.doc1 = doc1;
+	}
+}
