@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<bean class= "org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="Location" value="classpath:/db-config/Hikari.propterites"/>
+	</bean>
+	
+	<!-- 히카리 커넥션 DB설정 -->
+	<bean id="HikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521/XEPDB1" />
+		<property name="username" value="spring"/>
+		<property name="password" value="spring"/>
+	</bean>
+	
+	<!-- 위에 설정된 DB정보를 DataSource객체에 의존성 주입 -->
+	<bean id="datasource" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="HikariConfig"/>
+	</bean>
+	
+	<!--스프링 jdbc탬플릿 추가  (springjdbc사용시 커넥션 풀 객체를  setter주입을 통해 의존성 주입)-->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="datasource"/>
+	</bean>
+</beans>
